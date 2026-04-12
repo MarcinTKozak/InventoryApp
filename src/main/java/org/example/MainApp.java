@@ -24,6 +24,7 @@ public class MainApp extends Application {
         quantityField.setPromptText("Quantity");
 
         Button addButton = new Button("Add product");
+        Button deleteButton = new Button("Delete Selected");
 
         ListView<String> listView = new ListView<>();
         listView.getItems().addAll(ProductDAO.getProducts());
@@ -34,15 +35,28 @@ public class MainApp extends Application {
 
             ProductDAO.addProduct(name, quantity);
 
-            listView.getItems().add(name + " (" + quantity + ")");
+            listView.getItems().clear();
+            listView.getItems().addAll(ProductDAO.getProducts());
 
             nameField.clear();
             quantityField.clear();
 
         });
 
+        deleteButton.setOnAction(e -> {
+            String selected = listView.getSelectionModel().getSelectedItem();
+
+            if (selected != null) {
+                int id = Integer.parseInt(selected.split(" - ")[0]);
+
+                ProductDAO.deleteProduct(id);
+
+                listView.getItems().remove(selected);
+            }
+        });
+
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(nameField, quantityField, addButton, listView);
+        layout.getChildren().addAll(nameField, quantityField, addButton, deleteButton, listView);
 
         Scene scene = new Scene(layout, 300, 400);
 
