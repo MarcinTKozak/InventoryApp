@@ -56,4 +56,24 @@ public class ProductDAO {
         }
     }
 
+    public static void createTable() {
+
+        String sql = "CREATE TABLE IF NOT EXISTS products (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name  TEXT NOT NULL," +
+                "quantity INTEGER NOT NULL" + ");";
+
+        try (Connection conn = DatabaseConnection.connect();
+             Statement stmt = conn.createStatement()) {
+
+            stmt.execute(sql);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 }

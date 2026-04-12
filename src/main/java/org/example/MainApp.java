@@ -26,6 +26,7 @@ public class MainApp extends Application {
         Button addButton = new Button("Add product");
 
         ListView<String> listView = new ListView<>();
+        listView.getItems().addAll(ProductDAO.getProducts());
 
         addButton.setOnAction(e -> {
             String name = nameField.getText();
@@ -52,6 +53,7 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
+        ProductDAO.createTable();
         launch();
     }
 
