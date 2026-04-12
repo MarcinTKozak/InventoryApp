@@ -75,5 +75,25 @@ public class ProductDAO {
 
     }
 
+    public static void updateProduct(int id, String name, int quantity) {
+        String sql = "UPDATE products SET name = ?, quantity = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, name);
+            stmt.setInt(2, quantity);
+            stmt.setInt(3, id);
+
+            stmt.executeUpdate();
+
+            System.out.println("Product updated");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
