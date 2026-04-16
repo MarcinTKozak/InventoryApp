@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Alert;
 
 
 import javax.swing.text.BoxView;
@@ -31,8 +32,33 @@ public class MainApp extends Application {
         listView.getItems().addAll(ProductDAO.getProducts());
 
         addButton.setOnAction(e -> {
-            String name = nameField.getText();
-            int quantity = Integer.parseInt(quantityField.getText());
+
+            String name = nameField.getText().trim();
+            String quantityText = quantityField.getText().trim();
+
+
+            if (name.isEmpty() || quantityText.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Fill all fields!");
+                alert.showAndWait();
+                return;
+            }
+
+            int quantity;
+
+
+            try {
+                quantity = Integer.parseInt(quantityText);
+            } catch (NumberFormatException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Quantity must be a number!");
+                alert.showAndWait();
+                return;
+            }
 
             ProductDAO.addProduct(name, quantity);
 
@@ -41,7 +67,6 @@ public class MainApp extends Application {
 
             nameField.clear();
             quantityField.clear();
-
         });
 
         deleteButton.setOnAction(e -> {
